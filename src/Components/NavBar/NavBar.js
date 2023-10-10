@@ -1,14 +1,10 @@
-import SearchBar from "../SearchBar/SearchBar";
 import Logo from "./Logo";
 
-function NavBar() {
+function NavBar({ children }) {
   return (
     <nav className="nav-bar">
       <Logo />
-      <SearchBar />
-      <p className="num-results">
-        Found <strong>X</strong> results
-      </p>
+      {children}
     </nav>
   );
 }
