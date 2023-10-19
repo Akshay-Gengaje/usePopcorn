@@ -1,11 +1,11 @@
 
 import Movie from "../Movie/Movie";
 
-function MovieList({ movies }) {
+function MovieList({ movies, setSelectedId, selectedId }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie movie={movie} key={movie.imdbID} setSelectedId={setSelectedId} selectedId={selectedId} />
       ))}
     </ul>
   );
