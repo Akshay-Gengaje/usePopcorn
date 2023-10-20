@@ -14,8 +14,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-
 }
 
 html {
@@ -28,6 +26,11 @@ body {
   color: var(--color-text);
   background-color: var(--color-background-900);
   padding: 2.4rem;
+}
+
+::-webkit-scrollbar {
+  display: none
+    /* or add it to the track */
 }
 
 /* ******* */

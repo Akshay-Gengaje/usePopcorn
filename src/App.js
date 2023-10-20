@@ -1,7 +1,6 @@
 import NavBar from "./Components/NavBar/NavBar";
 import Main from "./Components/Main/Main";
 import { useEffect, useState } from "react";
-import { tempWatchedData } from "./Data/tempWatchedData";
 import SearchBar from "./Components/SearchBar/SearchBar";
 import NumResults from "./Components/NavBar/NumResults";
 import Box from "./Components/Box/Box";
@@ -16,19 +15,20 @@ const KEY = "812f6a2";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null)
 
+  const controller = new AbortController();
 
   const fetchMovies = async () => {
     try {
       setIsLoading(true);
       setError("")
       const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`, { signal: controller.signal }
       );
       if (!res.ok) {
         throw new Error("Something went wrong with fetching movies");
@@ -54,8 +54,9 @@ export default function App() {
       return
     }
     fetchMovies();
-    return () => console.log("Clean Up");
+    return () => controller.abort();
   }, [query]);
+
 
   return (
     <>
@@ -73,7 +74,7 @@ export default function App() {
         </Box>
 
         <Box>
-          {selectedId ? <MovieDetails selectedId={selectedId} setSelectedId={setSelectedId} />
+          {selectedId ? <MovieDetails selectedId={selectedId} setSelectedId={setSelectedId} onAddWatched={setWatched} watched={watched} />
             : <>
               <WatchedSummary watched={watched} />
               <WatchedMoviesList watched={watched} setWatched={setWatched} />
