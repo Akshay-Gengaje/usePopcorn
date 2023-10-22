@@ -5,7 +5,7 @@ function WatchedMovies({ movie, setWatched, watched }) {
     setWatched(watched => watched.filter(movie => movie.imdbID !== id))
   };
 
-  
+
   return (
     <li>
       {movie.poster !== "N/A" ? <img src={movie.poster} alt={`${movie.title} poster`} /> : <img src={ImgNotAvailabe} alt="" />}

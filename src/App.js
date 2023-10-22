@@ -15,7 +15,11 @@ const KEY = "812f6a2";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(() => {
+    const storedValue = JSON.parse(localStorage.getItem("watched"));
+    return storedValue || []
+  });
+  console.log("Watched : ", watched)
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");

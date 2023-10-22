@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import StarRating from '../StarRating/StarRating';
 import imageNotAvailable from '../../assets/image_not_available.png'
 import Loader from '../Loader/Loader';
@@ -11,6 +11,12 @@ const MovieDetails = ({ selectedId, setSelectedId, onAddWatched, watched }) => {
     const [userRating, setUserRating] = useState('');
     const isWatched = watched.map(movie => movie.imdbID).includes(selectedId);
     const watchedUserRating = watched.find((movie) => movie.imdbID === selectedId)?.userRating;
+    const countRef = useRef(0);
+
+    useEffect(() => {
+        if (userRating)
+            countRef.current = countRef.current + 1
+    }, [userRating])
     const {
         Title: title,
         Year: year,
@@ -57,9 +63,9 @@ const MovieDetails = ({ selectedId, setSelectedId, onAddWatched, watched }) => {
             poster,
             imdbRating: NaN ? "" : Number(imdbRating),
             runtime: NaN ? "" : Number(runtime.split(" ").at(0)),
-            userRating
+            userRating,
+            countRatingDecisions: countRef.current
         };
-
         handleAddWatched(newWatchedMovie);
         handleCloseDetails();
     }
@@ -97,6 +103,9 @@ const MovieDetails = ({ selectedId, setSelectedId, onAddWatched, watched }) => {
 
     }, [handleCloseDetails])
 
+    useEffect(() => {
+        localStorage.setItem("watched", JSON.stringify([...watched]))
+    }, [watched])
 
     return (
         <div className="details">
