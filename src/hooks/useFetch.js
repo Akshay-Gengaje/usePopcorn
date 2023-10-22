@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 const KEY = "812f6a2";
-export function useFetch({ query }) {
+export function useFetch(query  ) {
     const [movies, setMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    console.log("Query", query)
     useEffect(() => {
-
         if (query.length < 3) {
             setMovies([]);
             setError("");
@@ -16,8 +16,8 @@ export function useFetch({ query }) {
         return () => controller.abort();
     }, [query]);
 
+    const controller = new AbortController();
     const fetchMovies = async () => {
-        const controller = new AbortController();
         try {
 
             setIsLoading(true);

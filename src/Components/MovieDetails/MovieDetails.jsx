@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import StarRating from '../StarRating/StarRating';
 import imageNotAvailable from '../../assets/image_not_available.png'
 import Loader from '../Loader/Loader';
+import { useKey } from '../../hooks/useKey';
 const KEY = "812f6a2";
 
 const MovieDetails = ({ selectedId, setSelectedId, onAddWatched, watched }) => {
@@ -90,22 +91,10 @@ const MovieDetails = ({ selectedId, setSelectedId, onAddWatched, watched }) => {
         }
     }, [title])
 
-    useEffect(function () {
-        function callback(e) {
-            if (e.code === 'Escape') {
-                handleCloseDetails()
-            }
-        }
-        document.addEventListener('keydown', callback);
-        return function () {
-            document.removeEventListener('keydown', callback)
-        }
+    useKey("Escape", handleCloseDetails)
 
-    }, [handleCloseDetails])
 
-    useEffect(() => {
-        localStorage.setItem("watched", JSON.stringify([...watched]))
-    }, [watched])
+
 
     return (
         <div className="details">

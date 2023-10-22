@@ -1,6 +1,6 @@
 import NavBar from "./Components/NavBar/NavBar";
 import Main from "./Components/Main/Main";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchBar from "./Components/SearchBar/SearchBar";
 import NumResults from "./Components/NavBar/NumResults";
 import Box from "./Components/Box/Box";
@@ -11,20 +11,14 @@ import Loader from "./Components/Loader/Loader";
 import ErrorMessage from "./Components/ErrorMessage/ErrorMessage";
 import MovieDetails from "./Components/MovieDetails/MovieDetails";
 import { useFetch } from "./hooks/useFetch";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 
 export default function App() {
-  const [watched, setWatched] = useState(() => {
-    const storedValue = JSON.parse(localStorage.getItem("watched"));
-    return storedValue || []
-  });
-
+  const [watched, setWatched] = useLocalStorage([], "watched");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null)
-
-
-  const { movie, isLoading, error } = useFetch(query);
-
+  const { movies, isLoading, error } = useFetch(query);
 
   return (
     <>
@@ -35,7 +29,7 @@ export default function App() {
 
       <Main>
         <Box>
-          {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
+
           {isLoading && <Loader />}
           {!isLoading && !error && <MovieList movies={movies} selectedId={selectedId} setSelectedId={setSelectedId} />}
           {error && <ErrorMessage message={error} />}
